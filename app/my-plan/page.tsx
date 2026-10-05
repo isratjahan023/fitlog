@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Oswald } from "next/font/google";
+import { Clock, Flame, Star, Check, X, ChevronDown } from "lucide-react";
 import { usePlan } from "../PlanProvider";
 import PlanCounters from "../PlanCounters";
 import Footer from "../Footer";
@@ -25,19 +26,17 @@ export default function MyPlanPage() {
   const [tab, setTab] = useState<"plan" | "saved">("plan");
   const [sortBy, setSortBy] = useState("duration");
 
-  const items = [...(tab === "plan" ? plan : saved)].sort(
-    (a, b) => {
-      if (sortBy === "calories") {
-        return b.caloriesBurned - a.caloriesBurned;
-      }
-
-      if (sortBy === "rating") {
-        return b.rating - a.rating;
-      }
-
-      return a.duration - b.duration;
+  const items = [...(tab === "plan" ? plan : saved)].sort((a, b) => {
+    if (sortBy === "calories") {
+      return b.caloriesBurned - a.caloriesBurned;
     }
-  );
+
+    if (sortBy === "rating") {
+      return b.rating - a.rating;
+    }
+
+    return a.duration - b.duration;
+  });
 
   const minutes = plan.reduce(
     (total, workout) => total + workout.duration,
@@ -60,10 +59,7 @@ export default function MyPlanPage() {
               alt=""
               className="h-6 w-6 object-contain"
             />
-
-            <span
-              className={`${oswald.className} text-xl font-bold`}
-            >
+            <span className={`${oswald.className} text-xl font-bold`}>
               FITLOG
             </span>
           </Link>
@@ -90,9 +86,7 @@ export default function MyPlanPage() {
       </nav>
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
-        <h1
-          className={`${oswald.className} text-3xl font-bold`}
-        >
+        <h1 className={`${oswald.className} text-3xl font-bold`}>
           MY PLAN
         </h1>
 
@@ -104,7 +98,6 @@ export default function MyPlanPage() {
         <div className="mt-6 grid grid-cols-3 gap-3 rounded-xl border border-zinc-800 bg-[#15171c] p-5 sm:p-6">
           <div>
             <p className="text-xs text-zinc-400">Exercises</p>
-
             <p
               className={`${oswald.className} mt-2 text-3xl font-bold text-[#ccff00]`}
             >
@@ -114,20 +107,14 @@ export default function MyPlanPage() {
 
           <div className="border-l border-zinc-800 pl-4">
             <p className="text-xs text-zinc-400">Minutes</p>
-
-            <p
-              className={`${oswald.className} mt-2 text-3xl font-bold`}
-            >
+            <p className={`${oswald.className} mt-2 text-3xl font-bold`}>
               {minutes}
             </p>
           </div>
 
           <div className="border-l border-zinc-800 pl-4">
             <p className="text-xs text-zinc-400">Calories</p>
-
-            <p
-              className={`${oswald.className} mt-2 text-3xl font-bold`}
-            >
+            <p className={`${oswald.className} mt-2 text-3xl font-bold`}>
               {calories}
             </p>
           </div>
@@ -169,32 +156,33 @@ export default function MyPlanPage() {
 
           <label className="flex items-center gap-3 text-xs text-zinc-400">
             Sort By
+            <span className="relative">
+              <select
+                value={sortBy}
+                onChange={(event) => setSortBy(event.target.value)}
+                className="appearance-none rounded-lg border border-zinc-800 bg-[#15171c] py-2 pl-3 pr-9 text-white"
+              >
+                <option value="duration">Duration</option>
+                <option value="calories">Calories</option>
+                <option value="rating">Rating</option>
+              </select>
 
-            <select
-              value={sortBy}
-              onChange={(event) => setSortBy(event.target.value)}
-              className="rounded-lg border border-zinc-800 bg-[#15171c] px-3 py-2 text-white"
-            >
-              <option value="duration">Duration</option>
-              <option value="calories">Calories</option>
-              <option value="rating">Rating</option>
-            </select>
+              <ChevronDown
+                aria-hidden="true"
+                className="pointer-events-none absolute right-3 top-1/2 h-3 w-3 -translate-y-1/2"
+              />
+            </span>
           </label>
         </div>
 
-        {/* Workout list */}
+        {/* List */}
         {!ready ? (
-          <p
-            role="status"
-            className="py-16 text-center text-zinc-400"
-          >
+          <p role="status" className="py-16 text-center text-zinc-400">
             Loading workouts…
           </p>
         ) : items.length === 0 ? (
           <div className="mt-6 rounded-xl border border-dashed border-zinc-800 px-6 py-20 text-center">
-            <h2
-              className={`${oswald.className} text-xl font-bold`}
-            >
+            <h2 className={`${oswald.className} text-xl font-bold`}>
               NOTHING HERE YET
             </h2>
 
@@ -241,9 +229,30 @@ export default function MyPlanPage() {
                     </p>
 
                     <div className="mt-2 flex flex-wrap gap-3 text-xs text-zinc-400">
-                      <span>{workout.duration} min</span>
-                      <span>{workout.caloriesBurned} kcal</span>
-                      <span>★ {workout.rating}</span>
+                      <span className="inline-flex items-center gap-1.5">
+                        <Clock
+                          aria-hidden="true"
+                          className="h-3.5 w-3.5 text-[#ccff00]"
+                        />
+                        {workout.duration} min
+                      </span>
+
+                      <span className="inline-flex items-center gap-1.5">
+                        <Flame
+                          aria-hidden="true"
+                          className="h-3.5 w-3.5 text-[#ccff00]"
+                        />
+                        {workout.caloriesBurned} kcal
+                      </span>
+
+                      <span className="inline-flex items-center gap-1.5">
+                        <Star
+                          aria-hidden="true"
+                          className="h-3.5 w-3.5 text-[#ccff00]"
+                        />
+                        <span className="sr-only">Rating:</span>
+                        {workout.rating}
+                      </span>
                     </div>
                   </div>
 
@@ -260,9 +269,10 @@ export default function MyPlanPage() {
                         type="button"
                         onClick={() => markAsDone(workout.id)}
                         disabled={done}
-                        className="rounded-full bg-[#ccff00] px-4 py-2 text-xs font-semibold text-black disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex items-center gap-2 rounded-full bg-[#ccff00] px-4 py-2 text-xs font-semibold text-black disabled:cursor-not-allowed disabled:opacity-50"
                       >
-                        {done ? "✓ Done" : "✓ Mark as Done"}
+                        <Check aria-hidden="true" className="h-4 w-4" />
+                        {done ? "Done" : "Mark as Done"}
                       </button>
                     )}
 
@@ -274,9 +284,9 @@ export default function MyPlanPage() {
                           : removeFromSaved(workout.id)
                       }
                       aria-label={`Remove ${workout.name}`}
-                      className="px-2 py-2 text-xl text-zinc-400 hover:text-red-400"
+                      className="rounded p-2 text-zinc-400 hover:text-red-400"
                     >
-                      ×
+                      <X aria-hidden="true" className="h-4 w-4" />
                     </button>
                   </div>
                 </article>
