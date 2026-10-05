@@ -32,24 +32,40 @@ async function getWorkout(id: number): Promise<Workout | null> {
     "https://api.api-store.workers.dev/api/fitlog",
   ];
 
-  // The library response format is already confirmed.
-  // Find the selected workout by its ID.
+  let notFoundCount = 0;
+
   for (const endpoint of endpoints) {
     try {
-      const response = await fetch(endpoint, {
+      const response = await fetch(`${endpoint}/${id}`, {
         cache: "no-store",
       });
 
+      if (response.status === 404) {
+        notFoundCount += 1;
+        continue;
+      }
+
       if (!response.ok) continue;
 
-      const data: Workout[] = await response.json();
+      const data: Workout = await response.json();
 
-      if (!Array.isArray(data)) continue;
+      if (
+        data.id !== id ||
+        typeof data.name !== "string" ||
+        !Array.isArray(data.instructions) ||
+        !Array.isArray(data.muscleGroups)
+      ) {
+        continue;
+      }
 
-      return data.find((workout) => workout.id === id) ?? null;
+      return data;
     } catch {
       // Try the alternative API.
     }
+  }
+
+  if (notFoundCount === endpoints.length) {
+    return null;
   }
 
   throw new Error("Unable to load this workout. Please try again.");
