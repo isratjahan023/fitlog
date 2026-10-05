@@ -13,7 +13,6 @@ const oswald = Oswald({
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-[#0d0e10] text-white">
-      {/* Navbar */}
       <nav className="border-b border-zinc-800">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-5">
           <Link href="/" className="flex items-center gap-2">
@@ -52,7 +51,6 @@ export default function Home() {
       </nav>
 
       <main className="flex-1">
-        {/* Hero */}
         <section className="mx-auto max-w-6xl px-6 py-10">
           <div className="grid items-center gap-8 rounded-xl border border-zinc-800 bg-[#15171c] p-6 sm:p-10 md:grid-cols-[3fr_2fr]">
             <div>
@@ -74,7 +72,7 @@ export default function Home() {
 
               <a
                 href="#library"
-                className="mt-6 inline-flex items-center gap-2 rounded bg-[#ccff00] px-5 py-3 text-xs font-bold text-black transition-colors hover:bg-[#b8e600]"
+                className="mt-6 inline-flex items-center gap-2 rounded bg-[#ccff00] px-5 py-3 text-xs font-bold text-black hover:bg-[#b8e600]"
               >
                 BROWSE WORKOUTS
                 <ArrowDown size={16} aria-hidden="true" />
@@ -91,7 +89,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Library */}
         <section
           id="library"
           className="mx-auto max-w-6xl scroll-mt-6 px-6 pb-12 pt-4"

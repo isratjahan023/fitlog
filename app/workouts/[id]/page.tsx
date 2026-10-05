@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import WorkoutActions from "../../WorkoutActions";
 import PlanCounters from "../../PlanCounters";
 
-
 const oswald = Oswald({
   subsets: ["latin"],
   weight: ["600", "700"],
@@ -50,6 +49,7 @@ async function getWorkout(id: number): Promise<Workout | null> {
       const data: Workout = await response.json();
 
       if (
+        !data ||
         data.id !== id ||
         typeof data.name !== "string" ||
         !Array.isArray(data.instructions) ||
@@ -77,29 +77,34 @@ export default async function WorkoutDetailsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const workoutId = Number(id);
 
-  if (!/^\d+$/.test(id)) {
+  if (
+    !/^\d+$/.test(id) ||
+    !Number.isSafeInteger(workoutId) ||
+    workoutId < 1
+  ) {
     notFound();
   }
 
-  const workout = await getWorkout(Number(id));
+  const workout = await getWorkout(workoutId);
 
   if (!workout) {
     notFound();
   }
 
   const specs = [
-    ["Equipment", workout.equipment],
-    ["Difficulty", workout.difficulty],
-    ["Sets", workout.sets],
-    ["Reps", workout.reps],
-    ["Duration", `${workout.duration} min`],
-    ["Calories", `${workout.caloriesBurned} kcal`],
-    ["Rating", workout.rating],
+    { label: "Equipment", value: workout.equipment },
+    { label: "Difficulty", value: workout.difficulty },
+    { label: "Sets", value: workout.sets },
+    { label: "Reps", value: workout.reps },
+    { label: "Duration", value: `${workout.duration} min` },
+    { label: "Calories", value: `${workout.caloriesBurned} kcal` },
+    { label: "Rating", value: workout.rating },
   ];
 
   return (
-    <div className="min-h-screen bg-[#0d0e10] text-white">
+    <div className="flex min-h-screen flex-col bg-[#0d0e10] text-white">
       {/* Navbar */}
       <nav className="border-b border-zinc-800">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-5">
@@ -109,28 +114,36 @@ export default async function WorkoutDetailsPage({
               alt=""
               className="h-6 w-6 object-contain"
             />
+
             <span
-              className={`${oswald.className} text-xl font-bold`}
+              className={`${oswald.className} text-xl font-bold tracking-wide`}
             >
               FITLOG
             </span>
           </Link>
 
-          <div className="flex gap-5 text-sm text-zinc-400">
-            <Link href="/" className="hover:text-[#ccff00]">
+          <div className="flex items-center gap-2 text-sm">
+            <Link
+              href="/"
+              className="rounded-full bg-[#ccff00]/10 px-4 py-2 font-semibold text-[#ccff00]"
+            >
               Workouts
             </Link>
-            <Link href="/my-plan" className="hover:text-[#ccff00]">
+
+            <Link
+              href="/my-plan"
+              className="rounded-full px-4 py-2 text-zinc-400 hover:text-white"
+            >
               My Plan
             </Link>
           </div>
 
-         <PlanCounters />
+          <PlanCounters />
         </div>
       </nav>
 
       {/* Workout details */}
-      <main className="mx-auto max-w-6xl px-6 py-10">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
         <div className="grid items-start gap-8 lg:grid-cols-2">
           <img
             src={workout.image}
@@ -138,7 +151,7 @@ export default async function WorkoutDetailsPage({
             className="aspect-[4/5] w-full rounded-xl object-cover"
           />
 
-          <div>
+          <div className="min-w-0">
             <h1
               className={`${oswald.className} text-3xl font-bold uppercase sm:text-4xl`}
             >
@@ -162,7 +175,7 @@ export default async function WorkoutDetailsPage({
 
             {/* Key specs */}
             <dl className="mt-6 overflow-hidden rounded-xl border border-zinc-800 bg-[#15171c]">
-              {specs.map(([label, value]) => (
+              {specs.map(({ label, value }) => (
                 <div
                   key={label}
                   className="flex justify-between gap-4 border-b border-zinc-800 px-4 py-3 last:border-b-0"
@@ -170,6 +183,7 @@ export default async function WorkoutDetailsPage({
                   <dt className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
                     {label}
                   </dt>
+
                   <dd className="text-right text-sm">{value}</dd>
                 </div>
               ))}
@@ -186,8 +200,7 @@ export default async function WorkoutDetailsPage({
               ))}
             </ol>
 
-            {/* Buttons: functionality comes next */}
-          <WorkoutActions workout={workout} />
+            <WorkoutActions workout={workout} />
           </div>
         </div>
       </main>
@@ -201,6 +214,7 @@ export default async function WorkoutDetailsPage({
               alt=""
               className="h-5 w-5 object-contain"
             />
+
             <span className={`${oswald.className} font-bold`}>
               FITLOG
             </span>
