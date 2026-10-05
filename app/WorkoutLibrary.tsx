@@ -2,6 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Oswald } from "next/font/google";
+import { Clock, Flame, Star } from "lucide-react";
+
+const oswald = Oswald({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+});
 
 type Workout = {
   id: number;
@@ -76,7 +83,10 @@ export default function WorkoutLibrary() {
         role="status"
         className="flex items-center justify-center gap-3 py-16 text-zinc-400"
       >
-        <span className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-700 border-t-[#ccff00]" />
+        <span
+          aria-hidden="true"
+          className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-700 border-t-[#ccff00]"
+        />
         Loading workouts…
       </div>
     );
@@ -88,6 +98,7 @@ export default function WorkoutLibrary() {
         <p className="text-zinc-400">{error}</p>
 
         <button
+          type="button"
           onClick={() => setAttempt((value) => value + 1)}
           className="mt-4 rounded bg-[#ccff00] px-5 py-2 font-semibold text-black"
         >
@@ -124,7 +135,9 @@ export default function WorkoutLibrary() {
               ))}
             </div>
 
-            <h3 className="mt-3 text-lg font-bold uppercase">
+            <h3
+              className={`${oswald.className} mt-3 text-lg font-bold uppercase`}
+            >
               {workout.name}
             </h3>
 
@@ -133,9 +146,30 @@ export default function WorkoutLibrary() {
             </p>
 
             <div className="mt-4 flex flex-wrap gap-4 border-t border-zinc-800 pt-3 text-xs text-zinc-400">
-              <span>{workout.duration} min</span>
-              <span>{workout.caloriesBurned} kcal</span>
-              <span>★ {workout.rating}</span>
+              <span className="inline-flex items-center gap-1.5">
+                <Clock
+                  aria-hidden="true"
+                  className="h-3.5 w-3.5 text-[#ccff00]"
+                />
+                {workout.duration} min
+              </span>
+
+              <span className="inline-flex items-center gap-1.5">
+                <Flame
+                  aria-hidden="true"
+                  className="h-3.5 w-3.5 text-[#ccff00]"
+                />
+                {workout.caloriesBurned} kcal
+              </span>
+
+              <span className="inline-flex items-center gap-1.5">
+                <Star
+                  aria-hidden="true"
+                  className="h-3.5 w-3.5 text-[#ccff00]"
+                />
+                <span className="sr-only">Rating:</span>
+                {workout.rating}
+              </span>
             </div>
           </div>
         </Link>
