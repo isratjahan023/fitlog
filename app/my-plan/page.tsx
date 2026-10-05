@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Oswald } from "next/font/google";
 import { usePlan } from "../PlanProvider";
 import PlanCounters from "../PlanCounters";
+import Footer from "../Footer";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -49,7 +50,7 @@ export default function MyPlanPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#0d0e10] text-white">
+    <div className="flex min-h-screen flex-col bg-[#0d0e10] text-white">
       {/* Navbar */}
       <nav className="border-b border-zinc-800">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-5">
@@ -59,7 +60,10 @@ export default function MyPlanPage() {
               alt=""
               className="h-6 w-6 object-contain"
             />
-            <span className={`${oswald.className} text-xl font-bold`}>
+
+            <span
+              className={`${oswald.className} text-xl font-bold`}
+            >
               FITLOG
             </span>
           </Link>
@@ -67,7 +71,7 @@ export default function MyPlanPage() {
           <div className="flex items-center gap-2 text-sm">
             <Link
               href="/"
-              className="rounded-full px-4 py-2 text-zinc-400"
+              className="rounded-full px-4 py-2 text-zinc-400 hover:text-white"
             >
               Workouts
             </Link>
@@ -85,8 +89,10 @@ export default function MyPlanPage() {
         </div>
       </nav>
 
-      <main className="mx-auto max-w-6xl px-6 py-10">
-        <h1 className={`${oswald.className} text-3xl font-bold`}>
+      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
+        <h1
+          className={`${oswald.className} text-3xl font-bold`}
+        >
           MY PLAN
         </h1>
 
@@ -98,6 +104,7 @@ export default function MyPlanPage() {
         <div className="mt-6 grid grid-cols-3 gap-3 rounded-xl border border-zinc-800 bg-[#15171c] p-5 sm:p-6">
           <div>
             <p className="text-xs text-zinc-400">Exercises</p>
+
             <p
               className={`${oswald.className} mt-2 text-3xl font-bold text-[#ccff00]`}
             >
@@ -107,14 +114,20 @@ export default function MyPlanPage() {
 
           <div className="border-l border-zinc-800 pl-4">
             <p className="text-xs text-zinc-400">Minutes</p>
-            <p className={`${oswald.className} mt-2 text-3xl font-bold`}>
+
+            <p
+              className={`${oswald.className} mt-2 text-3xl font-bold`}
+            >
               {minutes}
             </p>
           </div>
 
           <div className="border-l border-zinc-800 pl-4">
             <p className="text-xs text-zinc-400">Calories</p>
-            <p className={`${oswald.className} mt-2 text-3xl font-bold`}>
+
+            <p
+              className={`${oswald.className} mt-2 text-3xl font-bold`}
+            >
               {calories}
             </p>
           </div>
@@ -128,6 +141,7 @@ export default function MyPlanPage() {
             className="flex gap-1 rounded-lg border border-zinc-800 bg-[#15171c] p-1"
           >
             <button
+              type="button"
               onClick={() => setTab("plan")}
               aria-pressed={tab === "plan"}
               className={`rounded-md px-4 py-2 text-xs ${
@@ -140,6 +154,7 @@ export default function MyPlanPage() {
             </button>
 
             <button
+              type="button"
               onClick={() => setTab("saved")}
               aria-pressed={tab === "saved"}
               className={`rounded-md px-4 py-2 text-xs ${
@@ -154,6 +169,7 @@ export default function MyPlanPage() {
 
           <label className="flex items-center gap-3 text-xs text-zinc-400">
             Sort By
+
             <select
               value={sortBy}
               onChange={(event) => setSortBy(event.target.value)}
@@ -166,14 +182,19 @@ export default function MyPlanPage() {
           </label>
         </div>
 
-        {/* List */}
+        {/* Workout list */}
         {!ready ? (
-          <p role="status" className="py-16 text-center text-zinc-400">
+          <p
+            role="status"
+            className="py-16 text-center text-zinc-400"
+          >
             Loading workouts…
           </p>
         ) : items.length === 0 ? (
           <div className="mt-6 rounded-xl border border-dashed border-zinc-800 px-6 py-20 text-center">
-            <h2 className={`${oswald.className} text-xl font-bold`}>
+            <h2
+              className={`${oswald.className} text-xl font-bold`}
+            >
               NOTHING HERE YET
             </h2>
 
@@ -229,13 +250,14 @@ export default function MyPlanPage() {
                   <div className="flex flex-wrap items-center gap-3">
                     <Link
                       href={`/workouts/${workout.id}`}
-                      className="rounded-full border border-zinc-600 px-4 py-2 text-xs"
+                      className="rounded-full border border-zinc-600 px-4 py-2 text-xs hover:border-[#ccff00]"
                     >
                       View Details
                     </Link>
 
                     {tab === "plan" && (
                       <button
+                        type="button"
                         onClick={() => markAsDone(workout.id)}
                         disabled={done}
                         className="rounded-full bg-[#ccff00] px-4 py-2 text-xs font-semibold text-black disabled:cursor-not-allowed disabled:opacity-50"
@@ -245,6 +267,7 @@ export default function MyPlanPage() {
                     )}
 
                     <button
+                      type="button"
                       onClick={() =>
                         tab === "plan"
                           ? removeFromPlan(workout.id)
@@ -263,25 +286,7 @@ export default function MyPlanPage() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-800">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-6 sm:flex-row">
-          <Link href="/" className="flex items-center gap-2">
-            <img
-              src="/logo.png"
-              alt=""
-              className="h-5 w-5 object-contain"
-            />
-            <span className={`${oswald.className} font-bold`}>
-              FITLOG
-            </span>
-          </Link>
-
-          <p className="text-center text-xs text-zinc-500">
-            © 2026 FitLog — Workout Library. Train hard, log honest.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
