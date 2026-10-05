@@ -5,7 +5,13 @@ building today's training plan, and saving exercises for later.
 
 ## Live Website
 
-Deployment link will be added after publishing.
+## Live Website
+
+https://sage-cocada-90a1c9.netlify.app
+
+## GitHub Repository
+
+https://github.com/isratjahan023/fitlog
 
 ## GitHub Repository
 
