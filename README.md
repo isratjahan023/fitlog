@@ -5,17 +5,11 @@ building today's training plan, and saving exercises for later.
 
 ## Live Website
 
-## Live Website
-
-https://sage-cocada-90a1c9.netlify.app
+[Visit FitLog](https://sage-cocada-90a1c9.netlify.app)
 
 ## GitHub Repository
 
-https://github.com/isratjahan023/fitlog
-
-## GitHub Repository
-
-https://github.com/isratjahan023/fitlog
+[View Source Code](https://github.com/isratjahan023/fitlog)
 
 ## Technologies Used
 
@@ -29,10 +23,10 @@ https://github.com/isratjahan023/fitlog
 
 ## Key Features
 
-1. Workout library loaded from an API with a backup endpoint.
+1. API-powered workout library with a backup endpoint.
 2. Individual workout pages with specifications and instructions.
 3. Today's Plan and Saved lists with live navbar counters.
-4. Plan summary showing exercises, minutes, and calories.
+4. Live summaries showing exercises, minutes, and calories.
 5. Workout completion and removal with toast notifications.
 6. Sorting by duration, calories, and rating on My Plan.
 7. Persistent plan and saved data using localStorage.
@@ -42,31 +36,37 @@ https://github.com/isratjahan023/fitlog
 
 ## Run Locally
 
-Install dependencies:
+Clone the repository:
 
+```bash
+git clone https://github.com/isratjahan023/fitlog.git
+cd fitlog
+```
+
+Install dependencies and start the development server:
+
+```bash
 npm install
-
-Start the development server:
-
 npm run dev
+```
 
-Open the Local URL shown in the terminal.
+Open the local URL shown in the terminal.
 
 ## Production Build
 
+```bash
 npm run build
 npm start
+```
 
 ## API Endpoints
 
-Primary:
-https://api.abcz.workers.dev/api/fitlog
+- Primary: https://api.abcz.workers.dev/api/fitlog
+- Alternative: https://api.api-store.workers.dev/api/fitlog
 
-Alternative:
-https://api.api-store.workers.dev/api/fitlog
+For a single workout, append its ID to either endpoint.
 
-Single workout:
-Append /:id to either endpoint, replacing :id with a workout ID.
+Example: https://api.abcz.workers.dev/api/fitlog/1
 
 ## Validation
 
